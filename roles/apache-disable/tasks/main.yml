@@ -1,12 +1,12 @@
 ---
-# Stop and uninstall Apache web services
- 
+# Stop apache service 
 - name: Stop apache
   service:
     name: httpd
     state: stopped
     enabled: no
 
+# Disable http/https ports on firewall
 - name: Configure firewall
   firewalld:
     service: "{{ item }}"
@@ -18,10 +18,12 @@
   notify:
   - Reload firewall
 
+# Check if firewall is running
 - name: Check firewall service status
   service_facts:
   register: services_state
 
+# Uninstall package
 - name: Ensure apache is removed
   yum:
     name: ['httpd', 'mod_ssl']

@@ -1,11 +1,11 @@
 ---
-# Install, configure, and start Apache web services
- 
+# Install package 
 - name: Ensure apache is installed
   yum:
     name: ['httpd', 'mod_ssl']
     state: present
 
+# Enable ports 80/443 on firewall
 - name: Configure firewall
   firewalld:
     service: "{{ item }}"
@@ -17,15 +17,18 @@
   notify:
   - Reload firewall
 
+# Check if firewall is running
 - name: Check firewall service status
   service_facts:
   register: services_state
 
+# Deploy simple html for testing
 - name: Deploy web content
   template:
     src: index.html
     dest: /var/www/html
 
+# Start service
 - name: Start apache
   service:
     name: httpd
