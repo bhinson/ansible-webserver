@@ -1,0 +1,28 @@
+---
+# Stop and uninstall Apache web services
+ 
+- name: Stop apache
+  service:
+    name: httpd
+    state: stopped
+    enabled: no
+
+- name: Configure firewall
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: disabled
+  with_items:
+    - http
+    - https
+  notify:
+  - Reload firewall
+
+- name: Check firewall service status
+  service_facts:
+  register: services_state
+
+- name: Ensure apache is removed
+  yum:
+    name: ['httpd', 'mod_ssl']
+    state: absent

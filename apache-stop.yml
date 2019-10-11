@@ -1,0 +1,6 @@
+---
+
+- name: Stop Apache
+  hosts: all
+  roles:
+    - role: apache-stop

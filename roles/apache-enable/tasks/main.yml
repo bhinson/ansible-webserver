@@ -1,0 +1,33 @@
+---
+# Install, configure, and start Apache web services
+ 
+- name: Ensure apache is installed
+  yum:
+    name: ['httpd', 'mod_ssl']
+    state: present
+
+- name: Configure firewall
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  with_items:
+    - http
+    - https
+  notify:
+  - Reload firewall
+
+- name: Check firewall service status
+  service_facts:
+  register: services_state
+
+- name: Deploy web content
+  template:
+    src: index.html
+    dest: /var/www/html
+
+- name: Start apache
+  service:
+    name: httpd
+    state: started
+    enabled: yes

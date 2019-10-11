@@ -1,0 +1,6 @@
+---
+
+- name: Stop and uninstall Apache
+  hosts: all
+  roles:
+    - role: apache-disable

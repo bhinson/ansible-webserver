@@ -1,0 +1,6 @@
+---
+
+- name: Install, configure, and start Apache
+  hosts: all
+  roles:
+    - role: apache-enable
